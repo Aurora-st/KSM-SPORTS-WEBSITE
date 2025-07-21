@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, Trophy, Sparkles, Zap, Shield } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
 
 export const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,14 +14,26 @@ export const LoginPage: React.FC = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/dashboard';
+  const { login } = useAuth();
+
+  const validateEmail = (email: string) => {
+    // Simple email regex
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (!validateEmail(formData.email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', formData);
-      localStorage.setItem('token', res.data.token);
-      navigate('/dashboard');
+      login(res.data.token);
+      navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     }
@@ -32,8 +45,8 @@ export const LoginPage: React.FC = () => {
       const res = await axios.post('http://localhost:5000/api/auth/google', {
         credential: credentialResponse.credential,
       });
-      localStorage.setItem('token', res.data.token);
-      navigate('/dashboard');
+      login(res.data.token);
+      navigate(from, { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.message || 'Google login failed');
     }

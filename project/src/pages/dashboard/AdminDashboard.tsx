@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Trophy, DollarSign, Calendar, TrendingUp, Eye, Edit, Trash2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const AdminDashboard: React.FC = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
   const stats = [
     { label: 'Total Students', value: '2,547', change: '+12%', icon: Users, color: 'text-blue-600' },
     { label: 'Active Programs', value: '12', change: '+2', icon: Trophy, color: 'text-green-600' },

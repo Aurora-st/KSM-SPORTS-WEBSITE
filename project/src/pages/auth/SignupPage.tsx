@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, Phone, Trophy, Sparkles, Zap, Crown, Rocket } from 'lucide-react';
 import axios from 'axios';
+import { useAuth } from '../../AuthContext';
 
 export const SignupPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,14 @@ export const SignupPage: React.FC = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/dashboard';
+  const { login } = useAuth();
+
+  const validateEmail = (email: string) => {
+    // Simple email regex
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +31,10 @@ export const SignupPage: React.FC = () => {
     // Frontend validation
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       setError('Please fill in all required fields.');
+      return;
+    }
+    if (!validateEmail(formData.email)) {
+      setError('Please enter a valid email address.');
       return;
     }
     if (formData.password !== formData.confirmPassword) {
@@ -34,15 +47,13 @@ export const SignupPage: React.FC = () => {
         email: formData.email,
         password: formData.password,
       });
-      localStorage.setItem('token', res.data.token);
-      navigate('/dashboard');
+      login(res.data.token);
+      navigate(from, { replace: true });
     } catch (err: any) {
-      console.error('Signup error:', err.response?.data || err);
-      setError(
-        err.response?.data?.message ||
-        (typeof err.response?.data === 'string' ? err.response.data : JSON.stringify(err.response?.data)) ||
-        'Signup failed'
-      );
+      let msg = 'Signup failed';
+      if (err.response?.data?.message) msg = err.response.data.message;
+      else if (typeof err.response?.data === 'string') msg = err.response.data;
+      setError(msg);
     }
   };
 

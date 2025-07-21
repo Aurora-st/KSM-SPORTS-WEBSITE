@@ -2,25 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { User, Calendar, CreditCard, Star, Trophy, Clock, Target } from 'lucide-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const UserDashboard: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/login');
+          return;
+        }
         const res = await axios.get('http://localhost:5000/api/me', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data.user);
       } catch (err: any) {
-        setError('Failed to fetch user data');
+        localStorage.removeItem('token');
+        navigate('/login');
       }
     };
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   if (error) return <div className="text-red-500 text-center mt-8">{error}</div>;
   if (!user) return <div className="text-center mt-8">Loading...</div>;

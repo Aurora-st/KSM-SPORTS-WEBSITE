@@ -61,11 +61,10 @@ export const AboutPage: React.FC = () => {
       image: 'ST'
     },
     {
-      name: 'Rajesh Kumar',
-      role: 'Head Cricket Coach',
-      experience: '12+ years',
-      specialization: 'Former Ranji Trophy Player',
-      image: 'RK'
+      name: 'Abhinav Singh',
+      role: 'Co-Founder',
+      specialization: 'Sports Management & Leadership',
+      image: 'AS'
     },
     {
       name: 'Carlos Martinez',

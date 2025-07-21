@@ -1,10 +1,13 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Clock, Users, Star, Calendar, Award, Target, ArrowLeft, CreditCard } from 'lucide-react';
+import { useAuth } from '../AuthContext';
 
 export const SportDetail: React.FC = () => {
   const { sport } = useParams<{ sport: string }>();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   // Mock data for sports details
   const sportsData: { [key: string]: any } = {
@@ -20,9 +23,8 @@ export const SportDetail: React.FC = () => {
       rating: 4.9,
       schedule: 'Mon, Wed, Fri - 6:00 AM to 8:00 AM',
       coach: {
-        name: 'Rajesh Kumar',
-        experience: '15 years',
-        achievements: 'Former Ranji Trophy Player, Level 3 Certified Coach'
+        name: 'Abhinav Singh',
+        achievements: 'Co-Founder, Sports Management & Leadership'
       },
       curriculum: [
         'Basic batting stance and grip',
@@ -89,6 +91,14 @@ export const SportDetail: React.FC = () => {
 
   const currentSport = sportsData[sport || ''] || sportsData.cricket;
 
+  const handlePayNow = () => {
+    if (!isLoggedIn) {
+      navigate('/login', { state: { from: { pathname: '/payment', state: { sport: currentSport } } } });
+    } else {
+      navigate('/payment', { state: { sport: currentSport } });
+    }
+  };
+
   return (
     <div className="pt-16 min-h-screen bg-gray-50">
       {/* Header Section */}
@@ -151,14 +161,14 @@ export const SportDetail: React.FC = () => {
               </div>
               
               <div className="space-y-3">
-                <Link
-                  to="/payment"
-                  state={{ sport: currentSport }}
+                <button
+                  type="button"
+                  onClick={handlePayNow}
                   className="w-full inline-flex items-center justify-center px-6 py-3 bg-secondary-500 text-white font-semibold rounded-xl hover:bg-secondary-600 transition-colors"
                 >
                   <CreditCard className="w-5 h-5 mr-2" />
                   Pay Now
-                </Link>
+                </button>
                 <button className="w-full px-6 py-3 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors">
                   Free Trial Class
                 </button>

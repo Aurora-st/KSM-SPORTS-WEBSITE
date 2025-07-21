@@ -8,6 +8,9 @@ module.exports = async (req, res, next) => {
   }
   const token = authHeader.split(' ')[1];
   try {
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ message: 'JWT secret not set on server' });
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded.id).select('-password');
     next();

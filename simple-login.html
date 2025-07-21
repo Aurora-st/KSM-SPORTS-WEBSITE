@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Login/Signup System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f8fa;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background: #4f8cff;
+      padding: 1em;
+      display: flex;
+      gap: 1em;
+      justify-content: flex-end;
+    }
+    nav button {
+      background: #fff;
+      border: none;
+      padding: 0.5em 1.2em;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    nav button:hover {
+      background: #e0eaff;
+    }
+    #welcome {
+      margin: 2em auto;
+      text-align: center;
+      font-size: 1.3em;
+      color: #333;
+    }
+    .form {
+      background: #fff;
+      max-width: 350px;
+      margin: 2em auto;
+      padding: 2em;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #0001;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    .form input {
+      padding: 0.7em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form button {
+      background: #4f8cff;
+      color: #fff;
+      border: none;
+      padding: 0.7em;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .form button:hover {
+      background: #2563eb;
+    }
+    .error {
+      color: #e11d48;
+      font-size: 0.95em;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <button id="loginBtn">Login</button>
+    <button id="signupBtn">Signup</button>
+    <button id="logoutBtn" style="display:none;">Logout</button>
+  </nav>
+
+  <div id="welcome" style="display:none;"></div>
+
+  <div id="forms">
+    <form id="loginForm" class="form" style="display:none;">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <div class="error" id="loginError"></div>
+    </form>
+
+    <form id="signupForm" class="form" style="display:none;">
+      <h2>Signup</h2>
+      <input type="text" id="signupUsername" placeholder="Username" required>
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <button type="submit">Signup</button>
+      <div class="error" id="signupError"></div>
+    </form>
+  </div>
+
+  <script>
+    // Helper: Email validation
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Show/hide elements
+    function show(id) { document.getElementById(id).style.display = ''; }
+    function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+    // Navbar buttons
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const welcome = document.getElementById('welcome');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const loginError = document.getElementById('loginError');
+    const signupError = document.getElementById('signupError');
+
+    // Session logic
+    function setSession(user) {
+      localStorage.setItem('sessionUser', JSON.stringify(user));
+    }
+    function getSession() {
+      const user = localStorage.getItem('sessionUser');
+      return user ? JSON.parse(user) : null;
+    }
+    function clearSession() {
+      localStorage.removeItem('sessionUser');
+    }
+
+    // UI update based on session
+    function updateUI() {
+      const user = getSession();
+      if (user) {
+        hide('loginForm');
+        hide('signupForm');
+        hide('loginBtn');
+        hide('signupBtn');
+        show('logoutBtn');
+        welcome.textContent = `Welcome, ${user.username || user.email}!`;
+        show('welcome');
+      } else {
+        hide('logoutBtn');
+        hide('welcome');
+        show('loginBtn');
+        show('signupBtn');
+      }
+    }
+
+    // Show login/signup forms
+    loginBtn.onclick = () => {
+      show('loginForm');
+      hide('signupForm');
+      loginError.textContent = '';
+      signupError.textContent = '';
+    };
+    signupBtn.onclick = () => {
+      show('signupForm');
+      hide('loginForm');
+      loginError.textContent = '';
+      signupError.textContent = '';
+    };
+    logoutBtn.onclick = () => {
+      clearSession();
+      updateUI();
+    };
+
+    // Signup logic
+    signupForm.onsubmit = function(e) {
+      e.preventDefault();
+      const username = document.getElementById('signupUsername').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      if (!isValidEmail(email)) {
+        signupError.textContent = 'Please enter a valid email.';
+        return;
+      }
+      if (!username || !password) {
+        signupError.textContent = 'All fields are required.';
+        return;
+      }
+      // Save user (for demo, only one user allowed)
+      localStorage.setItem('demoUser', JSON.stringify({ username, email, password }));
+      setSession({ username, email });
+      signupError.textContent = '';
+      updateUI();
+    };
+
+    // Login logic
+    loginForm.onsubmit = function(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if (!isValidEmail(email)) {
+        loginError.textContent = 'Please enter a valid email.';
+        return;
+      }
+      const user = JSON.parse(localStorage.getItem('demoUser') || '{}');
+      if (user.email === email && user.password === password) {
+        setSession({ username: user.username, email });
+        loginError.textContent = '';
+        updateUI();
+      } else {
+        loginError.textContent = 'Invalid email or password.';
+      }
+    };
+
+    // On page load
+    updateUI();
+  </script>
+</body>
+</html> 

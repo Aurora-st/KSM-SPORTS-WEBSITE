@@ -143,12 +143,12 @@ export const Footer: React.FC = () => {
             </h3>
             <ul className="space-y-3">
               {[
-                { name: 'Cricket Academy', emoji: '🏏' },
-                { name: 'Football Elite', emoji: '⚽' },
-                { name: 'Badminton Pro', emoji: '🏸' },
-                { name: 'Karate Dojo', emoji: '🥋' },
-                { name: 'Tennis Court', emoji: '🎾' },
-                { name: 'Aqua Sports', emoji: '🏊' },
+                { name: 'Cricket Academy', emoji: '🏏', path: '/programs/cricket' },
+                { name: 'Football Elite', emoji: '⚽', path: '/programs/football' },
+                { name: 'Badminton Pro', emoji: '🏸', path: '/programs/badminton' },
+                { name: 'Karate Dojo', emoji: '🥋', path: '/programs/karate' },
+                { name: 'Tennis Court', emoji: '🎾', path: '/programs/tennis' },
+                { name: 'Aqua Sports', emoji: '🏊', path: '/programs/swimming' },
               ].map((sport, index) => (
                 <motion.li 
                   key={sport.name}
@@ -156,12 +156,15 @@ export const Footer: React.FC = () => {
                   transition={{ duration: 0.2 }}
                   className="group"
                 >
-                  <span className="text-gray-300 hover:text-neon-purple transition-all duration-300 text-sm cursor-pointer flex items-center space-x-3">
+                  <Link
+                    to={sport.path}
+                    className="text-gray-300 hover:text-neon-purple transition-all duration-300 text-sm cursor-pointer flex items-center space-x-3"
+                  >
                     <span className="text-lg group-hover:scale-110 transition-transform duration-200">
                       {sport.emoji}
                     </span>
                     <span>{sport.name}</span>
-                  </span>
+                  </Link>
                 </motion.li>
               ))}
             </ul>
@@ -178,10 +181,10 @@ export const Footer: React.FC = () => {
             </h3>
             <div className="space-y-4">
               {[
-                { Icon: Phone, text: '9711445549', color: 'text-neon-green' },
-                { Icon: Mail, text: 'info@ksmsports.com', color: 'text-neon-blue' },
-                { Icon: MapPin, text: 'Sports Complex, New Delhi, India', color: 'text-neon-purple' },
-              ].map(({ Icon, text, color }, index) => (
+                { Icon: Phone, text: '+91 9711445549', color: 'text-neon-green', href: 'tel:+919711445549' },
+                { Icon: Mail, text: 'info@ksmsports.com', color: 'text-neon-blue', href: 'mailto:info@ksmsports.com' },
+                { Icon: MapPin, text: 'Sports Complex, New Delhi, India', color: 'text-neon-purple', href: null },
+              ].map(({ Icon, text, color, href }, index) => (
                 <motion.div 
                   key={index}
                   className="flex items-center space-x-3 group cursor-pointer"
@@ -191,9 +194,20 @@ export const Footer: React.FC = () => {
                   <div className={`w-10 h-10 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/10 group-hover:border-white/30 transition-all duration-300 ${color}`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className="text-gray-300 text-sm group-hover:text-white transition-colors duration-300">
-                    {text}
-                  </span>
+                  {href ? (
+                    <a
+                      href={href}
+                      target={href.startsWith('mailto:') ? '_blank' : undefined}
+                      rel="noopener noreferrer"
+                      className="text-gray-300 text-sm group-hover:text-white transition-colors duration-300"
+                    >
+                      {text}
+                    </a>
+                  ) : (
+                    <span className="text-gray-300 text-sm group-hover:text-white transition-colors duration-300">
+                      {text}
+                    </span>
+                  )}
                 </motion.div>
               ))}
             </div>
@@ -216,6 +230,7 @@ export const Footer: React.FC = () => {
               <p className="text-gray-500 text-xs mt-1 flex items-center justify-center md:justify-start space-x-2">
                 <span>Crafted with passion by</span>
                 <span className="text-neon-blue font-semibold">CEO: Sourav Tomar</span>
+                <span className="text-neon-blue font-semibold">| Co-Founder: Abhinav Singh</span>
                 <Sparkles className="w-3 h-3 text-neon-yellow" />
               </p>
             </div>
@@ -233,17 +248,13 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Floating Particles */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none z-0">
         {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-neon-blue rounded-full opacity-30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
+            className="absolute w-1 h-1 bg-neon-blue rounded-full opacity-30 z-0 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
             animate={{
-              y: [0, -100, 0],
+              y: [0, -30 + i * 2, 0],
               opacity: [0, 1, 0],
               scale: [0, 1, 0],
             }}

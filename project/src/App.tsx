@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { HomePage } from './pages/HomePage';
@@ -15,6 +15,13 @@ import { TestimonialsPage } from './pages/TestimonialsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 
+// PrivateRoute component for protecting routes
+const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+  const token = localStorage.getItem('token');
+  const location = useLocation();
+  return token ? children : <Navigate to="/login" replace state={{ from: location }} />;
+};
+
 function App() {
   return (
     <Router>
@@ -24,8 +31,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/dashboard" element={<PrivateRoute><UserDashboard /></PrivateRoute>} />
+          <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
           <Route path="/programs" element={<SportsPrograms />} />
           <Route path="/programs/:sport" element={<SportDetail />} />
           <Route path="/payment" element={<PaymentPage />} />

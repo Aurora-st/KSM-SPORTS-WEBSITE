@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Trophy, Zap, Sparkles } from 'lucide-react';
+import { useAuth } from '../../AuthContext';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +18,11 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const navItems = [
     { path: '/', label: 'Home' },
@@ -29,11 +37,7 @@ export const Navbar: React.FC = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-dark-900/80 backdrop-blur-xl border-b border-white/10 shadow-cyber' 
-          : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-dark-950`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
@@ -98,29 +102,34 @@ export const Navbar: React.FC = () => {
               </motion.div>
             ))}
             
-            <div className="flex items-center space-x-3 ml-6">
-              <Link
-                to="/login"
-                className="text-gray-300 hover:text-white font-medium px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
+            {isLoggedIn ? (
+              <button
+                onClick={handleLogout}
+                className="ml-6 text-gray-300 hover:text-white font-medium px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
               >
-                Login
-              </Link>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                Logout
+              </button>
+            ) : (
+              <>
                 <Link
-                  to="/signup"
-                  className="relative px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold rounded-xl overflow-hidden group shadow-neon hover:shadow-neon-purple transition-all duration-300"
+                  to="/login"
+                  className="text-gray-300 hover:text-white font-medium px-4 py-2 rounded-lg hover:bg-white/5 transition-all duration-300"
                 >
-                  <span className="relative z-10 flex items-center space-x-2">
-                    <span>Join Now</span>
-                    <Sparkles className="w-4 h-4" />
-                  </span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-neon-purple to-neon-pink opacity-0 group-hover:opacity-100"
-                    transition={{ duration: 0.3 }}
-                  />
+                  Login
                 </Link>
-              </motion.div>
-            </div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link
+                    to="/signup"
+                    className="relative px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold rounded-xl transition-all duration-300"
+                  >
+                    <span className="relative z-10 flex items-center space-x-2">
+                      <span>Join Now</span>
+                      <Sparkles className="w-4 h-4" />
+                    </span>
+                  </Link>
+                </motion.div>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -187,20 +196,34 @@ export const Navbar: React.FC = () => {
                   </motion.div>
                 ))}
                 <div className="pt-4 space-y-3 border-t border-white/10">
-                  <Link
-                    to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-xl hover:bg-white/5 transition-all duration-300"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/signup"
-                    onClick={() => setIsOpen(false)}
-                    className="block mx-4 text-center bg-gradient-to-r from-neon-blue to-neon-purple text-white px-6 py-3 rounded-xl font-semibold shadow-neon"
-                  >
-                    Join Now
-                  </Link>
+                  {isLoggedIn ? (
+                    <button
+                      onClick={() => {
+                        setIsOpen(false);
+                        handleLogout();
+                      }}
+                      className="block w-full px-4 py-3 text-gray-300 hover:text-white font-medium rounded-xl hover:bg-white/5 transition-all duration-300 text-left"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setIsOpen(false)}
+                        className="block px-4 py-3 text-gray-300 hover:text-white font-medium rounded-xl hover:bg-white/5 transition-all duration-300"
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="/signup"
+                        onClick={() => setIsOpen(false)}
+                        className="block mx-4 text-center bg-gradient-to-r from-neon-blue to-neon-purple text-white px-6 py-3 rounded-xl font-semibold shadow-neon"
+                      >
+                        Join Now
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>

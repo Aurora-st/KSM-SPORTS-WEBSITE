@@ -12,9 +12,15 @@ function signToken(user) {
   return jwt.sign({ id: user._id, email: user.email, name: user.name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
 
+// Helper: email validation
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 // Signup
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
+  if (!isValidEmail(email)) return res.status(400).json({ message: 'Invalid email format' });
   try {
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: 'User already exists' });
@@ -30,6 +36,7 @@ router.post('/signup', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  if (!isValidEmail(email)) return res.status(400).json({ message: 'Invalid email format' });
   try {
     const user = await User.findOne({ email });
     if (!user || !user.password) return res.status(400).json({ message: 'Invalid credentials' });
@@ -55,6 +62,9 @@ router.post('/google', async (req, res) => {
         name: payload.name,
         googleId: payload.sub
       });
+    } else if (!user.googleId) {
+      user.googleId = payload.sub;
+      await user.save();
     }
     const token = signToken(user);
     res.json({ token });
