@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, Target, Users, Award, Heart, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const AboutPage: React.FC = () => {
   const milestones = [
@@ -309,13 +310,12 @@ export const AboutPage: React.FC = () => {
               >
                 Start Your Journey
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-primary-600 transition-all duration-300"
+              <Link
+                to="/contact"
+                className="px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-primary-600 transition-all duration-300 inline-flex items-center justify-center"
               >
                 Contact Us
-              </motion.button>
+              </Link>
             </div>
           </motion.div>
         </div>

@@ -13,7 +13,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '3 months',
       students: 450,
       rating: 4.9,
-      price: '₹8,000',
+      price: '₹15,000',
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-50',
       features: ['Batting Techniques', 'Bowling Mastery', 'Fielding Skills', 'Match Strategy']
@@ -26,7 +26,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '4 months',
       students: 380,
       rating: 4.8,
-      price: '₹7,500',
+      price: '₹15,000',
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-50',
       features: ['Ball Control', 'Passing & Shooting', 'Tactical Awareness', 'Physical Fitness']
@@ -39,7 +39,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '2 months',
       students: 320,
       rating: 4.9,
-      price: '₹6,000',
+      price: '₹15,000',
       color: 'from-purple-500 to-purple-600',
       bgColor: 'bg-purple-50',
       features: ['Stroke Techniques', 'Court Movement', 'Smash & Drop', 'Mental Game']
@@ -52,7 +52,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '6 months',
       students: 280,
       rating: 4.9,
-      price: '₹9,500',
+      price: '₹20,000',
       color: 'from-red-500 to-red-600',
       bgColor: 'bg-red-50',
       features: ['Basic Forms', 'Self Defense', 'Mental Discipline', 'Competition Prep']
@@ -65,7 +65,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '3 months',
       students: 210,
       rating: 4.8,
-      price: '₹12,000',
+      price: '₹15,000',
       color: 'from-orange-500 to-orange-600',
       bgColor: 'bg-orange-50',
       features: ['Forehand & Backhand', 'Serve Techniques', 'Net Play', 'Match Play']
@@ -78,7 +78,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '2 months',
       students: 190,
       rating: 4.9,
-      price: '₹8,500',
+      price: '₹20,000',
       color: 'from-cyan-500 to-cyan-600',
       bgColor: 'bg-cyan-50',
       features: ['Stroke Techniques', 'Breathing Control', 'Water Safety', 'Endurance Training']
@@ -91,7 +91,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '4 months',
       students: 160,
       rating: 4.7,
-      price: '₹10,000',
+      price: '₹20,000',
       color: 'from-gray-600 to-gray-700',
       bgColor: 'bg-gray-50',
       features: ['Basic Punches', 'Footwork', 'Defense', 'Fitness Training']
@@ -104,7 +104,7 @@ export const SportsPrograms: React.FC = () => {
       duration: '5 months',
       students: 140,
       rating: 4.8,
-      price: '₹11,000',
+      price: '₹15,000',
       color: 'from-pink-500 to-pink-600',
       bgColor: 'bg-pink-50',
       features: ['Floor Exercises', 'Balance Beam', 'Flexibility', 'Strength Training']

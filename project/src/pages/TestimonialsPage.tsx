@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const TestimonialsPage: React.FC = () => {
   const testimonials = [
@@ -270,13 +271,20 @@ export const TestimonialsPage: React.FC = () => {
               >
                 Start Your Journey
               </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-primary-500 text-primary-600 font-semibold rounded-xl hover:bg-primary-50 transition-all duration-300"
+              <Link
+                to="/contact"
+                className="px-8 py-4 border-2 border-primary-500 text-primary-600 font-semibold rounded-xl hover:bg-primary-50 transition-all duration-300 inline-flex items-center justify-center"
               >
                 Contact Us
-              </motion.button>
+              </Link>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
+              >
+                Start Your Journey
+              </Link>
             </div>
           </motion.div>
         </div>
