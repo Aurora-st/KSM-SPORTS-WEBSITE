@@ -11,11 +11,15 @@ export const ContactPage: React.FC = () => {
     message: '',
   });
 
+  const [success, setSuccess] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement form submission with backend
-    console.log('Contact form submitted:', formData);
-    // Show success message
+    // Compose WhatsApp message
+    const msg = `Name: ${formData.name}%0AEmail: ${formData.email}%0APhone: ${formData.phone}%0ASport: ${formData.sport}%0AMessage: ${formData.message}`;
+    const phone = '919711445549';
+    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+    setSuccess(true);
   };
 
   const contactInfo = [
@@ -194,6 +198,9 @@ export const ContactPage: React.FC = () => {
                   <Send className="w-5 h-5" />
                   <span>Send Message</span>
                 </motion.button>
+                {success && (
+                  <div className="text-green-600 text-center font-semibold mt-4">Message sent successfully!</div>
+                )}
               </form>
             </motion.div>
 

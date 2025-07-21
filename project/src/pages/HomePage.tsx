@@ -10,6 +10,7 @@ export const HomePage: React.FC = () => {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [selectedElite, setSelectedElite] = useState<string | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -386,74 +387,113 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { name: 'Cricket', emoji: '🏏', color: 'from-green-400 to-green-600', glow: 'shadow-neon-green' },
-              { name: 'Football', emoji: '⚽', color: 'from-blue-400 to-blue-600', glow: 'shadow-neon' },
-              { name: 'Badminton', emoji: '🏸', color: 'from-purple-400 to-purple-600', glow: 'shadow-neon-purple' },
-              { name: 'Karate', emoji: '🥋', color: 'from-red-400 to-red-600', glow: 'shadow-neon-pink' },
-              { name: 'Tennis', emoji: '🎾', color: 'from-orange-400 to-orange-600', glow: 'shadow-neon-purple' },
-              { name: 'Swimming', emoji: '🏊', color: 'from-cyan-400 to-cyan-600', glow: 'shadow-neon' },
-            ].map((sport, index) => (
-              <motion.div
-                key={sport.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                whileHover={{ 
-                  scale: 1.05, 
-                  y: -10,
-                  rotateY: 5,
-                }}
-                className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer overflow-hidden"
-              >
-                {/* Background Glow */}
+          {selectedElite === null ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { name: 'Cricket', emoji: '🏏', color: 'from-green-400 to-green-600', glow: 'shadow-neon-green' },
+                { name: 'Football', emoji: '⚽', color: 'from-blue-400 to-blue-600', glow: 'shadow-neon' },
+                { name: 'Badminton', emoji: '🏸', color: 'from-purple-400 to-purple-600', glow: 'shadow-neon-purple' },
+                { name: 'Karate', emoji: '🥋', color: 'from-red-400 to-red-600', glow: 'shadow-neon-pink' },
+                { name: 'Tennis', emoji: '🎾', color: 'from-orange-400 to-orange-600', glow: 'shadow-neon-purple' },
+                { name: 'Swimming', emoji: '🏊', color: 'from-cyan-400 to-cyan-600', glow: 'shadow-neon' },
+              ].map((sport, index) => (
                 <motion.div
-                  className={`absolute inset-0 bg-gradient-to-r ${sport.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`}
-                />
-
-                {/* Sport Icon */}
-                <motion.div
-                  className="text-8xl mb-6 group-hover:scale-110 transition-transform duration-300"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  {sport.emoji}
-                </motion.div>
-
-                <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-neon-blue group-hover:to-neon-purple group-hover:bg-clip-text transition-all duration-300">
-                  {sport.name}
-                </h3>
-                
-                <p className="text-gray-400 mb-6 group-hover:text-gray-300 transition-colors duration-300">
-                  Elite {sport.name.toLowerCase()} training with world-class coaches 
-                  and cutting-edge facilities.
-                </p>
-                
-                <motion.div
-                  whileHover={{ x: 5 }}
-                  className="inline-flex items-center text-neon-blue font-semibold group-hover:text-neon-purple transition-colors duration-300"
-                >
-                  <span>Explore Program</span>
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
-                </motion.div>
-
-                {/* Hover Effect */}
-                <motion.div
-                  className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 180, 360],
+                  key={sport.name}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    y: -10,
+                    rotateY: 5,
                   }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.div>
-            ))}
-          </div>
+                  className="group relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer overflow-hidden"
+                  onClick={() => setSelectedElite(sport.name)}
+                >
+                  {/* Background Glow */}
+                  <motion.div
+                    className={`absolute inset-0 bg-gradient-to-r ${sport.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-3xl`}
+                  />
+                  {/* Sport Icon */}
+                  <motion.div
+                    className="text-8xl mb-6 group-hover:scale-110 transition-transform duration-300"
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    {sport.emoji}
+                  </motion.div>
+                  <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-neon-blue group-hover:to-neon-purple group-hover:bg-clip-text transition-all duration-300">
+                    {sport.name}
+                  </h3>
+                  <p className="text-gray-400 mb-6 group-hover:text-gray-300 transition-colors duration-300">
+                    Elite {sport.name.toLowerCase()} training with world-class coaches and cutting-edge facilities.
+                  </p>
+                  <motion.div
+                    whileHover={{ x: 5 }}
+                    className="inline-flex items-center text-neon-blue font-semibold group-hover:text-neon-purple transition-colors duration-300"
+                  >
+                    <span>Explore Program</span>
+                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
+                  </motion.div>
+                  {/* Hover Effect */}
+                  <motion.div
+                    className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-neon-blue/20 to-neon-purple/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 180, 360],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            // Show only the selected card, centered and larger, with a close button
+            <div className="flex justify-center items-center min-h-[400px]">
+              {(() => {
+                const sport = [
+                  { name: 'Cricket', emoji: '🏏', color: 'from-green-400 to-green-600', glow: 'shadow-neon-green' },
+                  { name: 'Football', emoji: '⚽', color: 'from-blue-400 to-blue-600', glow: 'shadow-neon' },
+                  { name: 'Badminton', emoji: '🏸', color: 'from-purple-400 to-purple-600', glow: 'shadow-neon-purple' },
+                  { name: 'Karate', emoji: '🥋', color: 'from-red-400 to-red-600', glow: 'shadow-neon-pink' },
+                  { name: 'Tennis', emoji: '🎾', color: 'from-orange-400 to-orange-600', glow: 'shadow-neon-purple' },
+                  { name: 'Swimming', emoji: '🏊', color: 'from-cyan-400 to-cyan-600', glow: 'shadow-neon' },
+                ].find(s => s.name === selectedElite);
+                if (!sport) return null;
+                return (
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    className="relative bg-white/10 backdrop-blur-2xl rounded-3xl p-12 border-2 border-white/20 shadow-2xl flex flex-col items-center max-w-lg w-full"
+                  >
+                    <button
+                      onClick={() => setSelectedElite(null)}
+                      className="absolute top-4 right-4 text-white text-2xl bg-black/30 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/60 transition-colors z-10"
+                      aria-label="Close"
+                    >
+                      ×
+                    </button>
+                    <div className="text-9xl mb-8">{sport.emoji}</div>
+                    <h3 className="text-4xl font-extrabold text-white mb-6 bg-gradient-to-r from-neon-blue via-neon-purple to-neon-pink bg-clip-text text-transparent">
+                      {sport.name}
+                    </h3>
+                    <p className="text-lg text-gray-200 mb-8 text-center">
+                      Elite {sport.name.toLowerCase()} training with world-class coaches and cutting-edge facilities.
+                    </p>
+                    <div className="inline-flex items-center text-neon-blue font-semibold text-lg">
+                      <span>Explore Program</span>
+                      <ArrowRight className="ml-2 w-6 h-6" />
+                    </div>
+                  </motion.div>
+                );
+              })()}
+            </div>
+          )}
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}

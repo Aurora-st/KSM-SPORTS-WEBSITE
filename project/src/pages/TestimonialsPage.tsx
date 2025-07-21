@@ -264,26 +264,17 @@ export const TestimonialsPage: React.FC = () => {
               Join thousands of athletes who have transformed their passion into excellence with KSM Sports.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
+              <Link
+                to="/signup"
+                className="px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 inline-flex items-center justify-center"
               >
                 Start Your Journey
-              </motion.button>
+              </Link>
               <Link
                 to="/contact"
                 className="px-8 py-4 border-2 border-primary-500 text-primary-600 font-semibold rounded-xl hover:bg-primary-50 transition-all duration-300 inline-flex items-center justify-center"
               >
                 Contact Us
-              </Link>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-4">
-              <Link
-                to="/signup"
-                className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300"
-              >
-                Start Your Journey
               </Link>
             </div>
           </motion.div>

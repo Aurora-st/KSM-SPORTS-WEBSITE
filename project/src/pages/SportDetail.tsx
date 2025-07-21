@@ -18,7 +18,7 @@ export const SportDetail: React.FC = () => {
       description: 'Master the gentleman\'s game with comprehensive cricket training that covers all aspects of the sport.',
       fullDescription: 'Our cricket program is designed to transform beginners into skilled players and take advanced players to the next level. We focus on technical skills, mental toughness, and strategic gameplay.',
       duration: '3 months',
-      price: '₹8,000',
+      price: '₹15,000',
       students: 450,
       rating: 4.9,
       schedule: 'Mon, Wed, Fri - 6:00 AM to 8:00 AM',
@@ -55,7 +55,7 @@ export const SportDetail: React.FC = () => {
       description: 'Develop your football skills with world-class coaching and modern training methods.',
       fullDescription: 'Our football program combines technical skill development with tactical awareness and physical conditioning to create well-rounded players.',
       duration: '4 months',
-      price: '₹7,500',
+      price: '₹15,000',
       students: 380,
       rating: 4.8,
       schedule: 'Tue, Thu, Sat - 5:30 AM to 7:30 AM',
@@ -84,6 +84,150 @@ export const SportDetail: React.FC = () => {
         'Teamwork skills',
         'Quick decision making',
         'Leadership development'
+      ]
+    },
+    badminton: {
+      name: 'Badminton',
+      emoji: '🏸',
+      color: 'from-purple-500 to-purple-600',
+      description: 'Excel in badminton with expert coaching in techniques and strategies.',
+      fullDescription: 'Our badminton program focuses on developing agility, precision, and advanced techniques for all levels. Personalized coaching and match play are core to our approach.',
+      duration: '2 months',
+      price: '₹15,000',
+      students: 320,
+      rating: 4.9,
+      schedule: 'Mon, Wed, Fri - 7:00 AM to 8:30 AM',
+      coach: {
+        name: 'Sarah Lee',
+        experience: '10 years',
+        achievements: 'National Badminton Champion'
+      },
+      curriculum: [
+        'Stroke techniques and footwork',
+        'Smash, drop, and net play',
+        'Singles and doubles tactics',
+        'Agility and speed drills',
+        'Mental game and focus'
+      ],
+      equipment: [
+        'Racquets and shuttlecocks',
+        'Indoor courts',
+        'Agility ladders',
+        'Training cones'
+      ],
+      benefits: [
+        'Improve reflexes',
+        'Boost cardiovascular health',
+        'Enhance tactical thinking',
+        'Build endurance'
+      ]
+    },
+    karate: {
+      name: 'Karate',
+      emoji: '🥋',
+      color: 'from-red-500 to-red-600',
+      description: 'Learn traditional karate forms, self-defense, and mental discipline.',
+      fullDescription: 'Our karate program instills discipline, confidence, and self-defense skills. Students progress through belts with a focus on technique and respect.',
+      duration: '6 months',
+      price: '₹20,000',
+      students: 280,
+      rating: 4.9,
+      schedule: 'Tue, Thu, Sat - 6:00 AM to 7:30 AM',
+      coach: {
+        name: 'Sensei Kumar',
+        experience: '15 years',
+        achievements: 'Black Belt, National Karate Coach'
+      },
+      curriculum: [
+        'Basic forms (Kata)',
+        'Self-defense techniques',
+        'Sparring and kumite',
+        'Mental discipline',
+        'Competition preparation'
+      ],
+      equipment: [
+        'Karate gi',
+        'Protective gear',
+        'Training mats',
+        'Punching pads'
+      ],
+      benefits: [
+        'Increase confidence',
+        'Improve flexibility',
+        'Learn self-defense',
+        'Build mental strength'
+      ]
+    },
+    tennis: {
+      name: 'Tennis',
+      emoji: '🎾',
+      color: 'from-orange-500 to-orange-600',
+      description: 'Perfect your tennis game with professional coaching and court practice.',
+      fullDescription: 'Our tennis program is designed for all levels, focusing on technique, strategy, and match play. Small group sessions ensure personalized attention.',
+      duration: '3 months',
+      price: '₹15,000',
+      students: 210,
+      rating: 4.8,
+      schedule: 'Mon, Wed, Fri - 8:00 AM to 9:30 AM',
+      coach: {
+        name: 'Anjali Mehra',
+        experience: '8 years',
+        achievements: 'State Tennis Champion'
+      },
+      curriculum: [
+        'Forehand and backhand',
+        'Serve and volley',
+        'Footwork and agility',
+        'Singles and doubles strategy',
+        'Match play and analysis'
+      ],
+      equipment: [
+        'Tennis racquets',
+        'Tennis balls',
+        'Clay and hard courts',
+        'Training cones'
+      ],
+      benefits: [
+        'Improve coordination',
+        'Boost stamina',
+        'Enhance tactical skills',
+        'Build sportsmanship'
+      ]
+    },
+    swimming: {
+      name: 'Swimming',
+      emoji: '🏊',
+      color: 'from-cyan-500 to-cyan-600',
+      description: 'Learn swimming techniques and water safety with certified instructors.',
+      fullDescription: 'Our swimming program covers all strokes, water safety, and endurance training. Certified instructors ensure a safe and supportive environment.',
+      duration: '2 months',
+      price: '₹20,000',
+      students: 190,
+      rating: 4.9,
+      schedule: 'Mon, Wed, Fri - 6:30 AM to 8:00 AM',
+      coach: {
+        name: 'Ravi Sharma',
+        experience: '12 years',
+        achievements: 'National Swimming Coach'
+      },
+      curriculum: [
+        'Freestyle, backstroke, breaststroke, butterfly',
+        'Breathing techniques',
+        'Endurance training',
+        'Water safety and rescue',
+        'Starts and turns'
+      ],
+      equipment: [
+        'Swimming pool',
+        'Kickboards',
+        'Pull buoys',
+        'Goggles and caps'
+      ],
+      benefits: [
+        'Increase lung capacity',
+        'Improve overall fitness',
+        'Learn water safety',
+        'Build confidence in water'
       ]
     },
     // Add more sports data as needed
