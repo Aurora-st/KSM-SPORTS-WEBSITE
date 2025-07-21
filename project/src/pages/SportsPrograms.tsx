@@ -1,9 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Clock, Users, Star, ArrowRight } from 'lucide-react';
 
 export const SportsPrograms: React.FC = () => {
+  const navigate = useNavigate();
   const sports = [
     {
       id: 'cricket',
@@ -197,13 +198,24 @@ export const SportsPrograms: React.FC = () => {
                   </div>
 
                   {/* CTA Button */}
-                  <Link
-                    to={`/programs/${sport.id}`}
-                    className={`w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r ${sport.color} text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 group`}
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
+                  <div className="flex flex-col gap-2">
+                    <Link
+                      to={`/programs/${sport.id}`}
+                      className={`w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r ${sport.color} text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 group`}
+                    >
+                      Learn More
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                    <button
+                      onClick={() => {
+                        localStorage.setItem('ksm_selected_program', JSON.stringify(sport));
+                        navigate('/accessories');
+                      }}
+                      className="w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 group"
+                    >
+                      Add Accessories
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             ))}

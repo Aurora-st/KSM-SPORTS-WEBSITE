@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CreditCard, Shield, Lock, CheckCircle } from 'lucide-react';
+import { CreditCard, Shield, Lock, CheckCircle, X } from 'lucide-react';
 
 export const PaymentPage: React.FC = () => {
   const location = useLocation();
-  const sport = location.state?.sport;
+  const navigate = useNavigate();
+  let program = location.state?.sport;
+  if (!program && typeof window !== 'undefined') {
+    const progStr = localStorage.getItem('ksm_selected_program');
+    if (progStr) program = JSON.parse(progStr);
+  }
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [formData, setFormData] = useState({
     cardNumber: '',
@@ -16,14 +21,48 @@ export const PaymentPage: React.FC = () => {
     phone: '',
   });
 
+  // Accessory integration
+  const [accessories, setAccessories] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const accStr = localStorage.getItem('ksm_cart_accessories');
+      if (accStr) return JSON.parse(accStr);
+    }
+    return [];
+  });
+  let accessoriesTotal = 0;
+  accessories.forEach((acc: any) => {
+    if (acc && acc.price) {
+      accessoriesTotal += parseFloat(acc.price.replace(/[^\d.]/g, ''));
+    }
+  });
+
+  // Remove accessory handler
+  const handleRemoveAccessory = (id: string) => {
+    const updated = accessories.filter((acc: any) => acc.id !== id);
+    setAccessories(updated);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ksm_cart_accessories', JSON.stringify(updated));
+    }
+  };
+
+  // Calculate program price
+  const programPrice = program ? parseFloat((program.price || '').replace(/[^\d.]/g, '')) : 0;
+  const processingFee = 99;
+  const gst = Math.round((programPrice + accessoriesTotal + processingFee) * 0.18);
+  const total = programPrice + accessoriesTotal + processingFee + gst;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement payment processing with backend
     console.log('Payment processing:', formData);
+    // Clear accessory after payment
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('ksm_selected_accessory');
+    }
     // Show success message/redirect
   };
 
-  if (!sport) {
+  if (!program) {
     return (
       <div className="pt-16 min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -234,7 +273,7 @@ export const PaymentPage: React.FC = () => {
                   className="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2"
                 >
                   <Lock className="w-5 h-5" />
-                  <span>Pay {sport.price}</span>
+                  <span>Pay ₹{total.toLocaleString()}</span>
                 </motion.button>
               </form>
             </motion.div>
@@ -251,32 +290,67 @@ export const PaymentPage: React.FC = () => {
               
               <div className="space-y-4 mb-6">
                 <div className="flex items-center space-x-4">
-                  <div className="text-4xl">{sport.emoji}</div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">{sport.name} Training</h4>
-                    <p className="text-sm text-gray-600">{sport.duration} program</p>
+                  {program && <div className="text-4xl">{program.emoji}</div>}
+                  <div className="flex-1">
+                    {program && <h4 className="font-semibold text-gray-900">{program.name} Training</h4>}
+                    {program && <p className="text-sm text-gray-600">{program.duration} program</p>}
                   </div>
+                  {program && (
+                    <button
+                      onClick={() => navigate('/programs')}
+                      className="text-blue-500 hover:underline text-xs ml-2"
+                      title="Edit Program"
+                    >
+                      Edit
+                    </button>
+                  )}
                 </div>
-                
-                <div className="border-t border-gray-100 pt-4 space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Program Fee</span>
-                    <span className="text-gray-900">{sport.price}</span>
+                {accessories.length > 0 && accessories.map((acc: any) => (
+                  <div key={acc.id} className="flex items-center space-x-4 mt-4 bg-yellow-50 rounded-xl p-3">
+                    <img src={acc.imageUrl} alt={acc.name} className="w-12 h-12 rounded-lg object-cover" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-yellow-900">Accessory: {acc.name}</h4>
+                      <p className="text-sm text-yellow-700">{acc.price}</p>
+                    </div>
+                    <button onClick={() => handleRemoveAccessory(acc.id)} className="text-red-500 hover:text-red-700 ml-2" title="Remove">
+                      <X className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => navigate('/accessories')}
+                      className="text-blue-500 hover:underline text-xs ml-2"
+                      title="Edit Accessories"
+                    >
+                      Edit
+                    </button>
                   </div>
+                ))}
+                <div className="border-t border-gray-100 pt-4 space-y-2">
+                  {program && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Program Fee</span>
+                      <span className="text-gray-900">{program.price}</span>
+                    </div>
+                  )}
+                  {accessories.length > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Accessories</span>
+                      <span className="text-gray-900">₹{accessoriesTotal.toLocaleString()}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Processing Fee</span>
                     <span className="text-gray-900">₹99</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">GST (18%)</span>
-                    <span className="text-gray-900">₹1,458</span>
+                    <span className="text-gray-900">₹{gst}</span>
                   </div>
                 </div>
                 
                 <div className="border-t border-gray-200 pt-4">
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span>₹9,557</span>
+                    <span>₹{total.toLocaleString()}</span>
                   </div>
                 </div>
               </div>

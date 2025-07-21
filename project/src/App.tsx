@@ -14,6 +14,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import { TestimonialsPage } from './pages/TestimonialsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
+import AccessoriesPage from './pages/AccessoriesPage';
 
 // PrivateRoute component for protecting routes
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/testimonials" element={<TestimonialsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/accessories" element={<AccessoriesPage />} />
         </Routes>
         <Footer />
       </div>
